@@ -391,6 +391,17 @@ def run_rag_query(q_text: str, top_k:int, temperature:float, max_output_tokens:i
 # ---------- Chat rendering ----------
 st.markdown("<h2 style='color:var(--text-color)'> Patent RAG — Chat</h2>", unsafe_allow_html=True)
 
+st.markdown(
+    """
+    <p style="color:gray; font-size:16px; margin-top:-10px;">
+     Ask questions about patents and get AI-powered answers.  
+    Simply type your query below and click <b>Send</b>.
+    eg. Battery thermal runaway prevention in EV
+    </p>
+    """,
+    unsafe_allow_html=True
+)
+
 chat_box = st.container()
 with chat_box:
     st.markdown("<div class='chat-container'>", unsafe_allow_html=True)
@@ -516,6 +527,7 @@ if last_assistant:
                     st.write("No sources to show.")
 
 st.caption("If you see ADC errors when calling BigQuery, run `gcloud auth application-default login` or set GOOGLE_APPLICATION_CREDENTIALS.")
+
 
 
 
