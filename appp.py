@@ -1,45 +1,69 @@
-# --- Credential loader: place at very top, BEFORE any google.cloud imports ---
-import os
-import json
-import base64
+# ----- Robust GCP credentials loader (replace top of file) -----
+# ----- Robust GCP credentials loader (replace top of file) -----
+import os, json, base64, re
 import streamlit as st
 
-# Secret key names to look for in Streamlit secrets
-SECRET_KEYS = ("gcp_service_account", "GCP_SERVICE_ACCOUNT", "gcp_sa", "gcp_service_account_b64")
-
+SECRET_KEYS = ("gcp_service_account","GCP_SERVICE_ACCOUNT","gcp_sa","gcp_service_account_b64")
 sa_json = None
 
-# raw JSON secret
-if "gcp_service_account" in st.secrets:
-    v = st.secrets["gcp_service_account"]
-    sa_json = json.dumps(v) if isinstance(v, dict) else v
+def clean_control_chars(s: str) -> str:
+    # Remove ASCII control chars except newline (10) and tab (9) and carriage return (13 -> normalized)
+    # Normalize CRLF to LF
+    s = s.replace('\r\n','\n').replace('\r','\n')
+    # Remove other control chars
+    return re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f]', '', s)
 
-# fallback: base64-encoded secret
+# 1) If secret stored as proper JSON object (Streamlit may load as dict), convert to string
+if "gcp_service_account" in st.secrets:
+    val = st.secrets["gcp_service_account"]
+    if isinstance(val, dict):
+        sa_json = json.dumps(val, ensure_ascii=False)
+    else:
+        sa_json = str(val)
+
+# 2) Base64 fallback
 if (not sa_json) and ("gcp_service_account_b64" in st.secrets):
     try:
-        sa_json = base64.b64decode(st.secrets["gcp_service_account_b64"]).decode("utf-8")
+        decoded = base64.b64decode(st.secrets["gcp_service_account_b64"]).decode("utf-8")
+        sa_json = decoded
     except Exception as ex:
         st.error("Failed to decode base64 GCP secret: " + str(ex))
 
-# generic loop for other names
+# 3) generic loop for other names (if user used different key)
 if not sa_json:
     for k in SECRET_KEYS:
         if k in st.secrets:
-            val = st.secrets[k]
-            sa_json = json.dumps(val) if isinstance(val, dict) else val
+            v = st.secrets[k]
+            sa_json = json.dumps(v) if isinstance(v, dict) else str(v)
             break
 
+# 4) sanitize + validate JSON before writing
 if sa_json:
+    sa_json = clean_control_chars(sa_json)
+    # If the JSON was double-encoded (a JSON string containing JSON), try to unwrap:
+    try:
+        parsed = json.loads(sa_json)
+        # if parsed is a string (i.e., double-encoded), try to decode again
+        if isinstance(parsed, str):
+            parsed2 = json.loads(parsed)
+            sa_json = json.dumps(parsed2, ensure_ascii=False)
+        else:
+            sa_json = json.dumps(parsed, ensure_ascii=False)
+    except Exception as ex:
+        st.error("GCP secret appears invalid JSON after cleaning: " + str(ex))
+        st.stop()
+
+    # write to /tmp and set env var
     cred_path = "/tmp/gcp_service_account.json"
     try:
-        with open(cred_path, "w") as fh:
+        with open(cred_path, "w", encoding="utf-8") as fh:
             fh.write(sa_json)
         os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = cred_path
         st.info("GCP credentials loaded from Streamlit secrets.")
     except Exception as e:
         st.error("Failed to write service account JSON to /tmp: " + str(e))
 else:
-    st.warning("No GCP service account found in Streamlit secrets. Add 'gcp_service_account' in Manage app → Secrets.")
+    st.warning("No GCP service account found in Streamlit secrets. Add 'gcp_service_account' or 'gcp_service_account_b64'.")
 
 # optional project var used by your code later
 #PROJECT = st.secrets.get("gcp_project", None)
@@ -492,4 +516,5 @@ if last_assistant:
                     st.write("No sources to show.")
 
 st.caption("If you see ADC errors when calling BigQuery, run `gcloud auth application-default login` or set GOOGLE_APPLICATION_CREDENTIALS.")
+
 
