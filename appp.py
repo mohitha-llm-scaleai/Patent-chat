@@ -1,3 +1,49 @@
+# --- Credential loader: place at very top, BEFORE any google.cloud imports ---
+import os
+import json
+import base64
+import streamlit as st
+
+# Secret key names to look for in Streamlit secrets
+SECRET_KEYS = ("gcp_service_account", "GCP_SERVICE_ACCOUNT", "gcp_sa", "gcp_service_account_b64")
+
+sa_json = None
+
+# raw JSON secret
+if "gcp_service_account" in st.secrets:
+    v = st.secrets["gcp_service_account"]
+    sa_json = json.dumps(v) if isinstance(v, dict) else v
+
+# fallback: base64-encoded secret
+if (not sa_json) and ("gcp_service_account_b64" in st.secrets):
+    try:
+        sa_json = base64.b64decode(st.secrets["gcp_service_account_b64"]).decode("utf-8")
+    except Exception as ex:
+        st.error("Failed to decode base64 GCP secret: " + str(ex))
+
+# generic loop for other names
+if not sa_json:
+    for k in SECRET_KEYS:
+        if k in st.secrets:
+            val = st.secrets[k]
+            sa_json = json.dumps(val) if isinstance(val, dict) else val
+            break
+
+if sa_json:
+    cred_path = "/tmp/gcp_service_account.json"
+    try:
+        with open(cred_path, "w") as fh:
+            fh.write(sa_json)
+        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = cred_path
+        st.info("GCP credentials loaded from Streamlit secrets.")
+    except Exception as e:
+        st.error("Failed to write service account JSON to /tmp: " + str(e))
+else:
+    st.warning("No GCP service account found in Streamlit secrets. Add 'gcp_service_account' in Manage app → Secrets.")
+
+# optional project var used by your code later
+#PROJECT = st.secrets.get("gcp_project", None)
+# --- end credential loader ---
 # appp_chat_fixed.py
 # Patent RAG — Chat (fixed)
 # Run: streamlit run appp_chat_fixed.py
@@ -446,3 +492,4 @@ if last_assistant:
                     st.write("No sources to show.")
 
 st.caption("If you see ADC errors when calling BigQuery, run `gcloud auth application-default login` or set GOOGLE_APPLICATION_CREDENTIALS.")
+
