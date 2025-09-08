@@ -59,7 +59,7 @@ if sa_json:
         with open(cred_path, "w", encoding="utf-8") as fh:
             fh.write(sa_json)
         os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = cred_path
-        st.info("GCP credentials loaded from Streamlit secrets.")
+        #st.info("GCP credentials loaded from Streamlit secrets.")
     except Exception as e:
         st.error("Failed to write service account JSON to /tmp: " + str(e))
 else:
@@ -516,5 +516,6 @@ if last_assistant:
                     st.write("No sources to show.")
 
 st.caption("If you see ADC errors when calling BigQuery, run `gcloud auth application-default login` or set GOOGLE_APPLICATION_CREDENTIALS.")
+
 
 
