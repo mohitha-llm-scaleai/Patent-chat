@@ -97,49 +97,79 @@ st.set_page_config(page_title="Patent RAG — Chat", layout="wide", initial_side
 
 # ---------- CSS / THEME ----------
 CSS = """
-  <style>
-    /* Sidebar background (robust selector using data-testid) */
-    div[data-testid="stSidebar"] {
-      background-color: #318CE7 !important;
-      color: #ffffff !important;
-    }
-    /* Sidebar content wrapper */
-    div[data-testid="stSidebar"] .css-1d391kg {
-      padding-top: 1.5rem;
-    }
+<style>
+/* ---------- FORCEFUL THEME: copy-paste into appp.py ---------- */
 
-    /* Make header slightly taller (if present) */
-    header[data-testid="stHeader"], div[data-testid="stHeader"] {
-      height: 57px !important;
-    }
+/* 1) Sidebar: very specific + fallback */
+section[data-testid="stSidebar"],
+div[data-testid="stSidebar"] {
+  background-color: #318CE7 !important;
+  padding: 3rem 1.5rem !important;
+  color: #ffffff !important;
+}
 
-    /* Textarea styling (main input) */
-    textarea[role="textbox"] {
-      font-size: 15px !important;
-      line-height: 1.45 !important;
-      background: #f0f4f8 !important;
-    }
+/* fallback: exact classes you provided (kept) */
+.st-emotion-cache-6qob1r,
+#root > div:nth-child(1) > div.withScreencast > div > div > div > section.st-emotion-cache-vk3wp9.eczjsme11 > div.st-emotion-cache-6qob1r.eczjsme3 > div.st-emotion-cache-16txtl3.eczjsme4 {
+  background-color: #318CE7 !important;
+}
 
-    /* Buttons — target Streamlit buttons */
-    button[data-testid="stButton"] {
-      background-color: #32CD32 !important;
-      color: #ffffff !important;
-      border-radius: 8px !important;
-      padding: 8px 12px !important;
-      border: none !important;
-    }
+/* 2) Header height */
+header[data-testid="stHeader"] { height: 57px !important; }
 
-    /* Make assistant bubble color fixed and nicer */
-    .assistant-bubble {
-      background: linear-gradient(180deg,#05386b,#1aa39c) !important;
-      color: white !important;
-      padding: 12px !important;
-      border-radius: 12px !important;
-    }
+/* 3) Buttons inside sidebar - force green */
+section[data-testid="stSidebar"] form input[type="submit"],
+section[data-testid="stSidebar"] button {
+  background-color: #32CD32 !important;
+  color: white !important;
+  border: none !important;
+}
 
-    /* Small helper classes you can use inside app HTML */
-    .muted { color: #6b6b6b; font-size: 14px; }
-    </style>
+/* 4) Main page logo fallback (keeps your placement) */
+#root img[alt="logo"], #root > div img {
+  max-width: 65% !important;
+  margin-left: 25% !important;
+  position: absolute !important;
+  top: -100px !important;
+}
+
+/* 5) Chat area / textareas */
+.stTextArea textarea,
+.stTextArea > div > textarea {
+  background: #318CE7 !important;
+  color: #ffffff !important;
+  border-radius: 8px !important;
+}
+
+/* 6) Chat bubbles classes (use them in HTML) */
+.user-bubble {
+  background: #f6f8fa !important;
+  color: #05386b !important;
+  padding: 12px !important;
+  border-radius: 12px !important;
+  white-space: pre-wrap !important;
+}
+.assistant-bubble {
+  background: linear-gradient(180deg,#05386b,#318CE7) !important;
+  color: #ffffff !important;
+  padding: 12px !important;
+  border-radius: 12px !important;
+  white-space: pre-wrap !important;
+}
+
+/* 7) Hide footer */
+footer { visibility: hidden !important; }
+
+/* 8) Last-resort override: target large container elements to force sidebar color */
+#root > div > div > div > section[data-testid="stSidebar"] {
+  background-color: #318CE7 !important;
+}
+
+/* responsive */
+@media (max-width: 800px) {
+  section[data-testid="stSidebar"] { padding: 1.25rem !important; }
+}
+</style>
 """
 st.markdown(CSS, unsafe_allow_html=True)
 
@@ -435,6 +465,7 @@ if last_assistant:
                     st.write("No sources to show.")
 
 st.caption("If you see ADC errors when calling BigQuery, run `gcloud auth application-default login` or set GOOGLE_APPLICATION_CREDENTIALS.")
+
 
 
 
