@@ -97,109 +97,49 @@ st.set_page_config(page_title="Patent RAG — Chat", layout="wide", initial_side
 
 # ---------- CSS / THEME ----------
 CSS = """
-<style>
-/* sidebar backgroud */
-.st-emotion-cache-6qob1r,
-#root > div:nth-child(1) > div.withScreencast > div > div > div > section.st-emotion-cache-vk3wp9.eczjsme11 > div.st-emotion-cache-6qob1r.eczjsme3 > div.st-emotion-cache-16txtl3.eczjsme4{
-    background-color: #318CE7;
-}
+  <style>
+    /* Sidebar background (robust selector using data-testid) */
+    div[data-testid="stSidebar"] {
+      background-color: #318CE7 !important;
+      color: #ffffff !important;
+    }
+    /* Sidebar content wrapper */
+    div[data-testid="stSidebar"] .css-1d391kg {
+      padding-top: 1.5rem;
+    }
 
-/* header / top block height */
-#root > div:nth-child(1) > div.withScreencast > div > div > div > section.main.st-emotion-cache-uf99v8.ea3mdgi5 > div.block-container.st-emotion-cache-z5fcl4.ea3mdgi4 > div > div > div.st-emotion-cache-ocqkz7.e1f1d6gn4{
-    height: 57px;
-}
+    /* Make header slightly taller (if present) */
+    header[data-testid="stHeader"], div[data-testid="stHeader"] {
+      height: 57px !important;
+    }
 
-/* sidebar alignment */
-.st-emotion-cache-ue6h4q {
-    font-size: 14px;
-    color: rgb(49, 51, 63);
-    display: flex;
-    visibility: visible;
-    height: auto;
-    min-height: 0.8rem;
-    vertical-align: middle;
-    flex-direction: row;
-    -webkit-box-align: center;
-    align-items: center;
-}
+    /* Textarea styling (main input) */
+    textarea[role="textbox"] {
+      font-size: 15px !important;
+      line-height: 1.45 !important;
+      background: #f0f4f8 !important;
+    }
 
-.st-emotion-cache-16txtl3 {
-    padding: 3rem 1.5rem;
-}
+    /* Buttons — target Streamlit buttons */
+    button[data-testid="stButton"] {
+      background-color: #32CD32 !important;
+      color: #ffffff !important;
+      border-radius: 8px !important;
+      padding: 8px 12px !important;
+      border: none !important;
+    }
 
-/* sidebar logo */
-#root > div:nth-child(1) > div.withScreencast > div > div > div > section.st-emotion-cache-1fjb3ft.eczjsme11 > div.st-emotion-cache-6qob1r.eczjsme3 > div.st-emotion-cache-16txtl3.eczjsme4 > div > div > div > div.st-emotion-cache-ocqkz7.e1f1d6gn4 > div:nth-child(1) > div > div > div > div > div > div > img{
-    max-width: 100%;
-    border-radius: 10px;
-}
+    /* Make assistant bubble color fixed and nicer */
+    .assistant-bubble {
+      background: linear-gradient(180deg,#05386b,#1aa39c) !important;
+      color: white !important;
+      padding: 12px !important;
+      border-radius: 12px !important;
+    }
 
-#root > div:nth-child(1) > div.withScreencast > div > div > div > section.st-emotion-cache-1fjb3ft.eczjsme11 > div.st-emotion-cache-6qob1r.eczjsme3 > div.st-emotion-cache-16txtl3.eczjsme4 > div > div > div > div.st-emotion-cache-ocqkz7.e1f1d6gn4 > div:nth-child(2) > div > div > div > div > div > div > img{
-    max-width: 100%;
-    border-radius: 10px;
-}
-
-/* Sidebar clear button */
-#root > div:nth-child(1) > div.withScreencast > div > div > div > section.st-emotion-cache-1fjb3ft.eczjsme11 > div.st-emotion-cache-6qob1r.eczjsme3 > div.st-emotion-cache-16txtl3.eczjsme4 > div > div > div > div:nth-child(9) > div > div > form > input[type=submit]{
-    width: 200%;
-    border-radius: 5px;
-    padding: 7px;
-    background-color: #32CD32;
-    border: none;
-}
-
-/* Sidebar clear button new (kept as-is from your snippet) */
-#st-emotion-cache-5rimss e1nzilvr5{
-    width: 400%;
-    border-radius: 5px;
-    padding: 7px;
-    background-color: #32CD32;
-    border: none;
-}
-
-/* main page logo */
-#root > div:nth-child(1) > div.withScreencast > div > div > div > section.stMain.st-emotion-cache-bm2z3a.ea3mdgi8 > div.stMainBlockContainer.block-container.st-emotion-cache-1jicfl2.ea3mdgi5 > div > div > div > div:nth-child(3) > div > div > div > img{
-    max-width: 65% !important;
-    margin-left: 25%;
-    position: absolute;
-    top: -100px;
-}
-
-/* Title */
-#generative-ai-empowers-policy-analysis-for-employment-development{
-    text-align: center;
-    color: rgb(69, 69, 69);
-    font-size: 25px;
-    position: relative;
-    /* top: -85px !important; */
-}
-
-/* Report View Button color updated2 */
-#root > div:nth-child(1) > div.withScreencast > div > div > div > section.stMain.st-emotion-cache-bm2z3a.ea3mdgi8 > div.stMainBlockContainer.block-container.st-emotion-cache-1jicfl2.ea3mdgi5 > div > div > div > div:nth-child(13) > div > div > div.stHorizontalBlock.st-emotion-cache-ocqkz7.e1f1d6gn5 > div.stColumn.st-emotion-cache-mb2p8r.e1f1d6gn3 > div > div > div > div > div > a,
-#root > div:nth-child(1) > div.withScreencast > div > div > div > section.stMain.st-emotion-cache-bm2z3a.ea3mdgi8 > div.stMainBlockContainer.block-container.st-emotion-cache-1jicfl2.ea3mdgi5 > div > div > div > div:nth-child(13) > div > div > div.stHorizontalBlock.st-emotion-cache-ocqkz7.e1f1d6gn5 > div.stColumn.st-emotion-cache-1wvp1g3.e1f1d6gn3 > div > div > div > div > div > a,
-
-#root > div:nth-child(1) > div.withScreencast > div > div > div > section.stMain.st-emotion-cache-bm2z3a.ea3mdgi8 > div.stMainBlockContainer.block-container.st-emotion-cache-1jicfl2.ea3mdgi5 > div > div > div > div:nth-child(13) > div > div > div:nth-child(6) > div.stColumn.st-emotion-cache-1wvp1g3.e1f1d6gn3 > div > div > div > div > div > a
-{
-    background: rgb(50, 205, 50);
-    color: white;
-}
-#root > div:nth-child(1) > div.withScreencast > div > div > div > section.stMain.st-emotion-cache-bm2z3a.ea3mdgi8 > div.stMainBlockContainer.block-container.st-emotion-cache-1jicfl2.ea3mdgi5 > div > div > div > div:nth-child(13) > div > div > div.stHorizontalBlock.st-emotion-cache-ocqkz7.e1f1d6gn5 > div.stColumn.st-emotion-cache-mb2p8r.e1f1d6gn3 > div > div > div > div > div > a,
-#root > div:nth-child(1) > div.withScreencast > div > div > div > section.stMain.st-emotion-cache-bm2z3a.ea3mdgi8 > div.stMainBlockContainer.block-container.st-emotion-cache-1jicfl2.ea3mdgi5 > div > div > div > div:nth-child(13) > div > div > div:nth-child(3) > div.stColumn.st-emotion-cache-mb2p8r.e1f1d6gn3 > div > div > div > div > div > a,
-#root > div:nth-child(1) > div.withScreencast > div > div > div > section.stMain.st-emotion-cache-bm2z3a.ea3mdgi8 > div.stMainBlockContainer.block-container.st-emotion-cache-1jicfl2.ea3mdgi5 > div > div > div > div:nth-child(13) > div > div > div:nth-child(6) > div.stColumn.st-emotion-cache-mb2p8r.e1f1d6gn3 > div > div > div > div > div > a
-{
-    background: rgb(50, 205, 50);
-    color: white;
-}
-
-button.st-emotion-cache-1vt4y43.ef3psqc16 {
-    color: white;
-    background-color: #ed3333;
-}
-
-#root > div:nth-child(1) > div.withScreencast > div > div > div > section.stMain.st-emotion-cache-bm2z3a.ea3mdgi8 > div.stMainBlockContainer.block-container.st-emotion-cache-1jicfl2.ea3mdgi5 > div > div > div > div:nth-child(14) > div:nth-child(1) > div > div > div > div.stElementContainer.element-container.st-key-button_key.st-emotion-cache-iyw1lb.e1f1d6gn4 > div > button{
-    padding: left 7%;
-}
-</style>
-
+    /* Small helper classes you can use inside app HTML */
+    .muted { color: #6b6b6b; font-size: 14px; }
+    </style>
 """
 st.markdown(CSS, unsafe_allow_html=True)
 
@@ -495,6 +435,7 @@ if last_assistant:
                     st.write("No sources to show.")
 
 st.caption("If you see ADC errors when calling BigQuery, run `gcloud auth application-default login` or set GOOGLE_APPLICATION_CREDENTIALS.")
+
 
 
 
