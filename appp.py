@@ -394,7 +394,7 @@ with chat_box:
             with cols2[1]:
                 md_html = html_lib.escape(display_text).replace("\n","<br/>")
                 st.markdown(
-                    f"<div style='background:linear-gradient(180deg,#05386b,#1aa39c); padding:12px; border-radius:12px; color:white; white-space:pre-wrap'>{md_html}</div>",
+                    f"<div style='background:linear-gradient(180deg,#318CE7,#1aa39c); padding:12px; border-radius:12px; color:white; white-space:pre-wrap'>{md_html}</div>",
                     unsafe_allow_html=True
                 )
                 # --- Sources dropdown ---
@@ -495,6 +495,7 @@ if last_assistant:
                     st.write("No sources to show.")
 
 st.caption("If you see ADC errors when calling BigQuery, run `gcloud auth application-default login` or set GOOGLE_APPLICATION_CREDENTIALS.")
+
 
 
 
