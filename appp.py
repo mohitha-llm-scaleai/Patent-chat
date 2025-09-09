@@ -98,137 +98,180 @@ st.set_page_config(page_title="Patent RAG — Chat", layout="wide", initial_side
 # ---------- CSS / THEME ----------
 CSS = """
 <style>
-:root{
-  --main-bg: #ffffff;
-  --sidebar-bg: #05386b;
-  --sidebar-text: #ffffff;
-  --accent-teal: #1aa39c; /* primary blue/teal */
-  --accent-green: #24b47e;
-  --text-color: #05386b;
-  --muted: #6b7780;
-  --bubble-user-bg: #f6f8fa;
-  --panel-border: rgba(5,8,12,0.06);
-}
-
-/* Base page */
-.stApp, .block-container, .main {
-  background: var(--main-bg) !important;
-  color: var(--text-color) !important;
-}
-
-/* Sidebar */
+/* ---------------------------
+   Sidebar background + padding
+   --------------------------- */
+/* Primary (reliable) selector for Streamlit sidebar */
 section[data-testid="stSidebar"] {
-  background: var(--sidebar-bg) !important;
-  color: var(--sidebar-text) !important;
+  background-color: #318CE7 !important;
+  padding: 3rem 1.5rem !important;
+  color: #fff !important;
 }
-section[data-testid="stSidebar"] * { color: var(--sidebar-text) !important; }
 
-/* Chat container */
+/* Fallback: preserve your original emotion-based selector in case it's present */
+.st-emotion-cache-6qob1r,
+#root > div:nth-child(1) > div.withScreencast > div > div > div > section.st-emotion-cache-vk3wp9.eczjsme11 > div.st-emotion-cache-6qob1r.eczjsme3 > div.st-emotion-cache-16txtl3.eczjsme4{
+  background-color: #318CE7 !important;
+}
+
+/* Sidebar logo area padding */
+.st-emotion-cache-16txtl3 {
+  padding: 3rem 1.5rem !important;
+}
+
+/* Sidebar item alignment */
+.st-emotion-cache-ue6h4q {
+  font-size: 14px !important;
+  color: rgb(49, 51, 63) !important;
+  display: flex !important;
+  align-items: center !important;
+  flex-direction: row !important;
+  min-height: 0.8rem !important;
+}
+
+/* Sidebar logos — make any img inside sidebar rounded and responsive */
+section[data-testid="stSidebar"] img,
+.st-emotion-cache-16txtl3 img,
+#root > div:nth-child(1) img {
+  max-width: 100% !important;
+  border-radius: 10px !important;
+}
+
+/* ---------------------------
+   Header height & top logo
+   --------------------------- */
+/* Header / top strip height */
+header[data-testid="stHeader"] {
+  height: 57px !important;
+}
+
+/* Fallback long selector for header block height */
+#root > div:nth-child(1) > div.withScreencast > div > div > div > section.main.st-emotion-cache-uf99v8.ea3mdgi5 > div.block-container.st-emotion-cache-z5fcl4.ea3mdgi4 > div > div > div.st-emotion-cache-ocqkz7.e1f1d6gn4{
+  height: 57px !important;
+}
+
+/* Main page logo placement (keeps your provided placement but makes it responsive) */
+#root > div:nth-child(1) img[alt="logo"],
+section.main img[alt="logo"] {
+  max-width: 65% !important;
+  margin-left: 25% !important;
+  position: absolute !important;
+  top: -100px !important;
+}
+
+/* Also include your highly-specific rule (kept as fallback) */
+#root > div:nth-child(1) > div.withScreencast > div > div > div > section.stMain.st-emotion-cache-bm2z3a.ea3mdgi8 > div.stMainBlockContainer.block-container.st-emotion-cache-1jicfl2.ea3mdgi5 > div > div > div > div:nth-child(3) > div > div > div > img{
+    max-width: 65% !important;
+    margin-left: 25%;
+    position: absolute;
+    top: -100px;
+}
+
+/* ---------------------------
+   Title styling
+   --------------------------- */
+h1, h2, .stTitle, .stMarkdown h2 {
+  color: rgb(69,69,69) !important;
+}
+
+/* If you have an element with the exact id you provided, style it */
+#generative-ai-empowers-policy-analysis-for-employment-development{
+    text-align: center !important;
+    color: rgb(69, 69, 69) !important;
+    font-size: 25px !important;
+    position: relative !important;
+}
+
+/* ---------------------------
+   Buttons (Report view / custom)
+   --------------------------- */
+/* Make "report view" links / buttons green with white text */
+#root a, a.st-a, .stButton>button, .stDownloadButton>button {
+  transition: background 140ms ease, color 140ms ease !important;
+}
+
+/* Apply green background to your long-report-button selectors (kept) */
+#root > div:nth-child(1) a,
+#root > div:nth-child(1) > div.withScreencast > div > div > div > section.stMain.st-emotion-cache-bm2z3a.ea3mdgi8  a {
+    background: rgb(50, 205, 50) !important;
+    color: white !important;
+}
+
+/* Your explicit button rule */
+button.st-emotion-cache-1vt4y43.ef3psqc16 {
+    color: white !important;
+    background-color: #ed3333 !important;
+}
+
+/* Clear chat button styles (target input[type=submit] inside sidebar forms as in your rule) */
+section[data-testid="stSidebar"] form input[type=submit],
+#root > div:nth-child(1) form input[type=submit] {
+    width: 100% !important;
+    border-radius: 5px !important;
+    padding: 7px !important;
+    background-color: #32CD32 !important;
+    border: none !important;
+    color: white !important;
+    font-weight: 600 !important;
+}
+
+/* Your original long selector preserved (fallback) */
+#root > div:nth-child(1) > div.withScreencast > div > div > div > section.st-emotion-cache-1fjb3ft.eczjsme11 > div.st-emotion-cache-6qob1r.eczjsme3 > div.st-emotion-cache-16txtl3.eczjsme4 > div > div > div > div:nth-child(9) > div > div > form > input[type=submit]{
+    width: 200% !important;
+    border-radius: 5px !important;
+    padding: 7px !important;
+    background-color: #32CD32 !important;
+    border: none !important;
+}
+
+/* ---------------------------
+   Chat container / bubbles
+   --------------------------- */
 .chat-container {
-  background: transparent;
-  border-radius: 12px;
-  padding: 8px;
-  border: 1px solid var(--panel-border);
-  max-height: 65vh;
-  overflow-y: auto;
+  background: transparent !important;
+  border-radius: 12px !important;
+  padding: 8px !important;
+  border: 1px solid rgba(5,8,12,0.06) !important;
+  max-height: 65vh !important;
+  overflow-y: auto !important;
 }
-.meta { color: var(--muted); font-size:12px; margin-bottom:6px; }
 
-/* ============================
-   TEXTAREA (chat input)
-   ============================ */
+/* user bubble */
+.user-bubble {
+  background: #f6f8fa !important;
+  color: #05386b !important;
+  padding: 12px !important;
+  border-radius: 12px !important;
+  white-space: pre-wrap !important;
+}
+
+/* assistant bubble (gradient similar to your original) */
+.assistant-bubble {
+  background: linear-gradient(180deg,#05386b,#318CE7) !important;
+  color: #ffffff !important;
+  padding: 12px !important;
+  border-radius: 12px !important;
+  white-space: pre-wrap !important;
+}
+
+/* ---------------------------
+   Misc tweaks
+   --------------------------- */
+footer { visibility: hidden !important; }
+
+/* make textarea match blue theme (optional) */
 .stTextArea textarea,
 .stTextArea > div > textarea {
-  background: var(--accent-teal) !important;   /* blue background */
-  color: #ffffff !important;                   /* white text */
-  border-radius: 8px !important;
-  border: 1px solid rgba(0,0,0,0.05) !important;
-  padding: 12px !important;
-  box-shadow: none !important;
-  resize: vertical !important;
-}
-.stTextArea textarea::placeholder,
-.stTextArea > div > textarea::placeholder {
-  color: rgba(255,255,255,0.9) !important;
-}
-.stTextArea textarea:focus,
-.stTextArea > div > textarea:focus {
-  outline: none !important;
-  box-shadow: 0 0 0 4px rgba(26,163,156,0.2) !important;
-}
-
-/* ============================
-   BUTTONS: send / download / general
-   Make sure all actionable buttons look consistent
-   ============================ */
-
-/* primary style for Streamlit buttons and downloads */
-.stButton>button,
-.stDownloadButton>button,
-.stDownloadButton button,
-.stDownloadButton > button,
-.stForm button {
-  background: var(--accent-teal) !important;   /* blue default */
-  color: #ffffff !important;                   /* white text */
-  border-radius: 8px !important;
-  border: none !important;
-  padding: 10px 14px !important;
-  font-weight: 500 !important;
-  box-shadow: 0 2px 6px rgba(5,8,12,0.08) !important;
-  transition: transform 140ms ease, box-shadow 140ms ease, background 140ms ease, color 140ms ease !important;
-}
-
-/* hover */
-.stButton>button:hover,
-.stDownloadButton>button:hover,
-.stForm button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 18px rgba(5,8,12,0.12) !important;
-}
-
-/* active / focus / pressed -> white background, accent text for readability */
-.stButton>button:active,
-.stDownloadButton>button:active,
-.stForm button:active,
-.stButton>button:focus,
-.stDownloadButton>button:focus,
-.stForm button:focus {
-  background: #ffffff !important;              /* becomes white on active/focus */
-  color: var(--accent-teal) !important;        /* text becomes accent color */
-  box-shadow: 0 0 0 4px rgba(26,163,156,0.12) !important;
-  transform: none !important;
-}
-
-/* If a button ever gets an aria-pressed style for toggles */
-.stButton>button[aria-pressed="true"],
-.stDownloadButton>button[aria-pressed="true"],
-.stForm button[aria-pressed="true"] {
-  background: #ffffff !important;
-  color: var(--accent-teal) !important;
-}
-
-/* keep consistent small padding override */
-.stButton>button, .stDownloadButton>button, .stForm button {
-  border-radius: 8px; padding:8px 12px;
-}
-
-/* ============================
-   TOP HEADER BAR
-   ============================ */
-/* header strip (Deploy, Run, ... bar) */
-header[data-testid="stHeader"] {
-  background: var(--accent-teal) !important;   /* blue bar */
+  background: #318CE7 !important;
   color: #ffffff !important;
-}
-header[data-testid="stHeader"] * {
-  color: #ffffff !important;
+  border-radius: 8px !important;
 }
 
-/* small utility for dark textarea inside card */
-.stTextArea, .stTextArea * { background-clip: padding-box !important; }
-
-/* hide default footer */
-footer { visibility: hidden; }
+/* small responsive fix */
+@media (max-width: 800px) {
+  .chat-container { max-height: 50vh !important; }
+  section[data-testid="stSidebar"] { padding: 1.25rem !important; }
+}
 </style>
 
 
@@ -527,6 +570,7 @@ if last_assistant:
                     st.write("No sources to show.")
 
 st.caption("If you see ADC errors when calling BigQuery, run `gcloud auth application-default login` or set GOOGLE_APPLICATION_CREDENTIALS.")
+
 
 
 
