@@ -98,68 +98,65 @@ st.set_page_config(page_title="Patent RAG — Chat", layout="wide", initial_side
 # ---------- CSS / THEME ----------
 CSS = """
 <style>
-/* ---------------------------
-   Sidebar background + padding
-   --------------------------- */
-/* Primary (reliable) selector for Streamlit sidebar */
-section[data-testid="stSidebar"] {
-  background-color: #318CE7 !important;
-  padding: 3rem 1.5rem !important;
-  color: #fff !important;
-}
-
-/* Fallback: preserve your original emotion-based selector in case it's present */
+/* sidebar backgroud */
 .st-emotion-cache-6qob1r,
 #root > div:nth-child(1) > div.withScreencast > div > div > div > section.st-emotion-cache-vk3wp9.eczjsme11 > div.st-emotion-cache-6qob1r.eczjsme3 > div.st-emotion-cache-16txtl3.eczjsme4{
-  background-color: #318CE7 !important;
+    background-color: #318CE7;
 }
 
-/* Sidebar logo area padding */
-.st-emotion-cache-16txtl3 {
-  padding: 3rem 1.5rem !important;
-}
-
-/* Sidebar item alignment */
-.st-emotion-cache-ue6h4q {
-  font-size: 14px !important;
-  color: rgb(49, 51, 63) !important;
-  display: flex !important;
-  align-items: center !important;
-  flex-direction: row !important;
-  min-height: 0.8rem !important;
-}
-
-/* Sidebar logos — make any img inside sidebar rounded and responsive */
-section[data-testid="stSidebar"] img,
-.st-emotion-cache-16txtl3 img,
-#root > div:nth-child(1) img {
-  max-width: 100% !important;
-  border-radius: 10px !important;
-}
-
-/* ---------------------------
-   Header height & top logo
-   --------------------------- */
-/* Header / top strip height */
-header[data-testid="stHeader"] {
-  height: 57px !important;
-}
-
-/* Fallback long selector for header block height */
+/* header / top block height */
 #root > div:nth-child(1) > div.withScreencast > div > div > div > section.main.st-emotion-cache-uf99v8.ea3mdgi5 > div.block-container.st-emotion-cache-z5fcl4.ea3mdgi4 > div > div > div.st-emotion-cache-ocqkz7.e1f1d6gn4{
-  height: 57px !important;
+    height: 57px;
 }
 
-/* Main page logo placement (keeps your provided placement but makes it responsive) */
-#root > div:nth-child(1) img[alt="logo"],
-section.main img[alt="logo"] {
-  max-width: 65% !important;
-  margin-left: 25% !important;
-  position: absolute !important;
-  top: -100px !important;
+/* sidebar alignment */
+.st-emotion-cache-ue6h4q {
+    font-size: 14px;
+    color: rgb(49, 51, 63);
+    display: flex;
+    visibility: visible;
+    height: auto;
+    min-height: 0.8rem;
+    vertical-align: middle;
+    flex-direction: row;
+    -webkit-box-align: center;
+    align-items: center;
 }
 
-/* Also include your highly-specific rule (kept as fallback) */
+.st-emotion-cache-16txtl3 {
+    padding: 3rem 1.5rem;
+}
+
+/* sidebar logo */
+#root > div:nth-child(1) > div.withScreencast > div > div > div > section.st-emotion-cache-1fjb3ft.eczjsme11 > div.st-emotion-cache-6qob1r.eczjsme3 > div.st-emotion-cache-16txtl3.eczjsme4 > div > div > div > div.st-emotion-cache-ocqkz7.e1f1d6gn4 > div:nth-child(1) > div > div > div > div > div > div > img{
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+#root > div:nth-child(1) > div.withScreencast > div > div > div > section.st-emotion-cache-1fjb3ft.eczjsme11 > div.st-emotion-cache-6qob1r.eczjsme3 > div.st-emotion-cache-16txtl3.eczjsme4 > div > div > div > div.st-emotion-cache-ocqkz7.e1f1d6gn4 > div:nth-child(2) > div > div > div > div > div > div > img{
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+/* Sidebar clear button */
+#root > div:nth-child(1) > div.withScreencast > div > div > div > section.st-emotion-cache-1fjb3ft.eczjsme11 > div.st-emotion-cache-6qob1r.eczjsme3 > div.st-emotion-cache-16txtl3.eczjsme4 > div > div > div > div:nth-child(9) > div > div > form > input[type=submit]{
+    width: 200%;
+    border-radius: 5px;
+    padding: 7px;
+    background-color: #32CD32;
+    border: none;
+}
+
+/* Sidebar clear button new (kept as-is from your snippet) */
+#st-emotion-cache-5rimss e1nzilvr5{
+    width: 400%;
+    border-radius: 5px;
+    padding: 7px;
+    background-color: #32CD32;
+    border: none;
+}
+
+/* main page logo */
 #root > div:nth-child(1) > div.withScreencast > div > div > div > section.stMain.st-emotion-cache-bm2z3a.ea3mdgi8 > div.stMainBlockContainer.block-container.st-emotion-cache-1jicfl2.ea3mdgi5 > div > div > div > div:nth-child(3) > div > div > div > img{
     max-width: 65% !important;
     margin-left: 25%;
@@ -167,113 +164,41 @@ section.main img[alt="logo"] {
     top: -100px;
 }
 
-/* ---------------------------
-   Title styling
-   --------------------------- */
-h1, h2, .stTitle, .stMarkdown h2 {
-  color: rgb(69,69,69) !important;
-}
-
-/* If you have an element with the exact id you provided, style it */
+/* Title */
 #generative-ai-empowers-policy-analysis-for-employment-development{
-    text-align: center !important;
-    color: rgb(69, 69, 69) !important;
-    font-size: 25px !important;
-    position: relative !important;
+    text-align: center;
+    color: rgb(69, 69, 69);
+    font-size: 25px;
+    position: relative;
+    /* top: -85px !important; */
 }
 
-/* ---------------------------
-   Buttons (Report view / custom)
-   --------------------------- */
-/* Make "report view" links / buttons green with white text */
-#root a, a.st-a, .stButton>button, .stDownloadButton>button {
-  transition: background 140ms ease, color 140ms ease !important;
+/* Report View Button color updated2 */
+#root > div:nth-child(1) > div.withScreencast > div > div > div > section.stMain.st-emotion-cache-bm2z3a.ea3mdgi8 > div.stMainBlockContainer.block-container.st-emotion-cache-1jicfl2.ea3mdgi5 > div > div > div > div:nth-child(13) > div > div > div.stHorizontalBlock.st-emotion-cache-ocqkz7.e1f1d6gn5 > div.stColumn.st-emotion-cache-mb2p8r.e1f1d6gn3 > div > div > div > div > div > a,
+#root > div:nth-child(1) > div.withScreencast > div > div > div > section.stMain.st-emotion-cache-bm2z3a.ea3mdgi8 > div.stMainBlockContainer.block-container.st-emotion-cache-1jicfl2.ea3mdgi5 > div > div > div > div:nth-child(13) > div > div > div.stHorizontalBlock.st-emotion-cache-ocqkz7.e1f1d6gn5 > div.stColumn.st-emotion-cache-1wvp1g3.e1f1d6gn3 > div > div > div > div > div > a,
+
+#root > div:nth-child(1) > div.withScreencast > div > div > div > section.stMain.st-emotion-cache-bm2z3a.ea3mdgi8 > div.stMainBlockContainer.block-container.st-emotion-cache-1jicfl2.ea3mdgi5 > div > div > div > div:nth-child(13) > div > div > div:nth-child(6) > div.stColumn.st-emotion-cache-1wvp1g3.e1f1d6gn3 > div > div > div > div > div > a
+{
+    background: rgb(50, 205, 50);
+    color: white;
+}
+#root > div:nth-child(1) > div.withScreencast > div > div > div > section.stMain.st-emotion-cache-bm2z3a.ea3mdgi8 > div.stMainBlockContainer.block-container.st-emotion-cache-1jicfl2.ea3mdgi5 > div > div > div > div:nth-child(13) > div > div > div.stHorizontalBlock.st-emotion-cache-ocqkz7.e1f1d6gn5 > div.stColumn.st-emotion-cache-mb2p8r.e1f1d6gn3 > div > div > div > div > div > a,
+#root > div:nth-child(1) > div.withScreencast > div > div > div > section.stMain.st-emotion-cache-bm2z3a.ea3mdgi8 > div.stMainBlockContainer.block-container.st-emotion-cache-1jicfl2.ea3mdgi5 > div > div > div > div:nth-child(13) > div > div > div:nth-child(3) > div.stColumn.st-emotion-cache-mb2p8r.e1f1d6gn3 > div > div > div > div > div > a,
+#root > div:nth-child(1) > div.withScreencast > div > div > div > section.stMain.st-emotion-cache-bm2z3a.ea3mdgi8 > div.stMainBlockContainer.block-container.st-emotion-cache-1jicfl2.ea3mdgi5 > div > div > div > div:nth-child(13) > div > div > div:nth-child(6) > div.stColumn.st-emotion-cache-mb2p8r.e1f1d6gn3 > div > div > div > div > div > a
+{
+    background: rgb(50, 205, 50);
+    color: white;
 }
 
-/* Apply green background to your long-report-button selectors (kept) */
-#root > div:nth-child(1) a,
-#root > div:nth-child(1) > div.withScreencast > div > div > div > section.stMain.st-emotion-cache-bm2z3a.ea3mdgi8  a {
-    background: rgb(50, 205, 50) !important;
-    color: white !important;
-}
-
-/* Your explicit button rule */
 button.st-emotion-cache-1vt4y43.ef3psqc16 {
-    color: white !important;
-    background-color: #ed3333 !important;
+    color: white;
+    background-color: #ed3333;
 }
 
-/* Clear chat button styles (target input[type=submit] inside sidebar forms as in your rule) */
-section[data-testid="stSidebar"] form input[type=submit],
-#root > div:nth-child(1) form input[type=submit] {
-    width: 100% !important;
-    border-radius: 5px !important;
-    padding: 7px !important;
-    background-color: #32CD32 !important;
-    border: none !important;
-    color: white !important;
-    font-weight: 600 !important;
-}
-
-/* Your original long selector preserved (fallback) */
-#root > div:nth-child(1) > div.withScreencast > div > div > div > section.st-emotion-cache-1fjb3ft.eczjsme11 > div.st-emotion-cache-6qob1r.eczjsme3 > div.st-emotion-cache-16txtl3.eczjsme4 > div > div > div > div:nth-child(9) > div > div > form > input[type=submit]{
-    width: 200% !important;
-    border-radius: 5px !important;
-    padding: 7px !important;
-    background-color: #32CD32 !important;
-    border: none !important;
-}
-
-/* ---------------------------
-   Chat container / bubbles
-   --------------------------- */
-.chat-container {
-  background: transparent !important;
-  border-radius: 12px !important;
-  padding: 8px !important;
-  border: 1px solid rgba(5,8,12,0.06) !important;
-  max-height: 65vh !important;
-  overflow-y: auto !important;
-}
-
-/* user bubble */
-.user-bubble {
-  background: #f6f8fa !important;
-  color: #05386b !important;
-  padding: 12px !important;
-  border-radius: 12px !important;
-  white-space: pre-wrap !important;
-}
-
-/* assistant bubble (gradient similar to your original) */
-.assistant-bubble {
-  background: linear-gradient(180deg,#05386b,#318CE7) !important;
-  color: #ffffff !important;
-  padding: 12px !important;
-  border-radius: 12px !important;
-  white-space: pre-wrap !important;
-}
-
-/* ---------------------------
-   Misc tweaks
-   --------------------------- */
-footer { visibility: hidden !important; }
-
-/* make textarea match blue theme (optional) */
-.stTextArea textarea,
-.stTextArea > div > textarea {
-  background: #318CE7 !important;
-  color: #ffffff !important;
-  border-radius: 8px !important;
-}
-
-/* small responsive fix */
-@media (max-width: 800px) {
-  .chat-container { max-height: 50vh !important; }
-  section[data-testid="stSidebar"] { padding: 1.25rem !important; }
+#root > div:nth-child(1) > div.withScreencast > div > div > div > section.stMain.st-emotion-cache-bm2z3a.ea3mdgi8 > div.stMainBlockContainer.block-container.st-emotion-cache-1jicfl2.ea3mdgi5 > div > div > div > div:nth-child(14) > div:nth-child(1) > div > div > div > div.stElementContainer.element-container.st-key-button_key.st-emotion-cache-iyw1lb.e1f1d6gn4 > div > button{
+    padding: left 7%;
 }
 </style>
-
 
 """
 st.markdown(CSS, unsafe_allow_html=True)
@@ -570,6 +495,7 @@ if last_assistant:
                     st.write("No sources to show.")
 
 st.caption("If you see ADC errors when calling BigQuery, run `gcloud auth application-default login` or set GOOGLE_APPLICATION_CREDENTIALS.")
+
 
 
 
